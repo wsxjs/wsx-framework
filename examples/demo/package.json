@@ -1,0 +1,19 @@
+{
+  "name": "demo-app",
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "echo 'Dev server not implemented yet'",
+    "build": "echo 'Build not implemented yet'",  
+    "start": "echo 'Start server not implemented yet'",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@wsx-framework/core": "workspace:*"
+  },
+  "devDependencies": {
+    "@wsx-framework/cli": "workspace:*",
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  }
+}
