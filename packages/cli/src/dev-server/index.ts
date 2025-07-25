@@ -1,5 +1,4 @@
-import { createWSXServer } from '@wsx-framework/core/server';
-import { WSXAppConfig } from '@wsx-framework/core';
+import { createWSXServer, WSXAppConfig } from '@wsx-framework/core';
 import { watch } from 'chokidar';
 
 export async function startDevServer(config: WSXAppConfig) {
