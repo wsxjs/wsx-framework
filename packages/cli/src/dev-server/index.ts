@@ -1,28 +1,24 @@
-import { createWSXServer, WSXAppConfig } from '@wsx-framework/core';
-import { watch } from 'chokidar';
+import { createViteDevServer, WSXConfig } from '@wsx-framework/core';
 
-export async function startDevServer(config: WSXAppConfig) {
-  console.log('Starting WSX development server...');
+export async function startDevServer(config: WSXConfig) {
+  console.log('Starting WSX development server with Vite...');
 
-  const { server, listen } = createWSXServer(config);
+  try {
+    const server = await createViteDevServer(config);
+    
+    await server.listen();
+    
+    console.log(`🚀 WSX dev server running at:`);
+    server.printUrls();
 
-  // Watch for file changes
-  const watcher = watch(config.pages, {
-    ignored: /node_modules/,
-    persistent: true
-  });
+    process.on('SIGINT', async () => {
+      console.log('\n🛑 Shutting down development server...');
+      await server.close();
+      process.exit(0);
+    });
 
-  watcher.on('change', (path) => {
-    console.log(`File changed: ${path}`);
-    // TODO: Implement hot module reloading
-  });
-
-  listen(config.port);
-
-  process.on('SIGINT', () => {
-    console.log('\nShutting down development server...');
-    watcher.close();
-    server.close();
-    process.exit(0);
-  });
+  } catch (error) {
+    console.error('❌ Failed to start development server:', error);
+    process.exit(1);
+  }
 }

@@ -1,65 +1,65 @@
-import { WebComponent, autoRegister } from '@wsx-framework/core';
+import { WebComponent, autoRegister } from "@wsxjs/wsx-core";
 
 interface BlogPostProps {
-  slug: string;
-  title: string;
-  content: string;
-  date: string;
+    slug: string;
+    title: string;
+    content: string;
+    date: string;
 }
 
-@autoRegister()
-export class BlogPostPage extends WebComponent<BlogPostProps> {
-  render() {
-    const { slug, title, content, date } = this.props;
-    
-    return (
-      <article class="blog-post">
-        <header>
-          <h1>{title}</h1>
-          <time>{date}</time>
-        </header>
-        <div class="content">
-          <p>{content}</p>
-        </div>
-        <nav>
-          <a href="/blog">← All Posts</a>
-          <a href="/">Home</a>
-        </nav>
-      </article>
-    );
-  }
+@autoRegister({ tagName: "blog-post-page" })
+export class BlogPostPage extends WebComponent {
+    render() {
+        const { slug, title, content, date } = this.props;
 
-  static async getServerSideProps({ params }: { params: { slug: string } }) {
-    // Mock blog data - in real app this would come from CMS/database
-    const posts: Record<string, Omit<BlogPostProps, 'slug'>> = {
-      'hello-world': {
-        title: 'Hello World',
-        content: 'This is our first blog post using WSX Framework!',
-        date: '2024-01-01'
-      },
-      'wsx-features': {
-        title: 'WSX Framework Features',
-        content: 'Exploring SSR, routing, and zero-runtime benefits.',
-        date: '2024-01-02'
-      }
-    };
-
-    const post = posts[params.slug];
-    
-    if (!post) {
-      return {
-        notFound: true
-      };
+        return (
+            <article class="blog-post">
+                <header>
+                    <h1>{title}</h1>
+                    <time>{date}</time>
+                </header>
+                <div class="content">
+                    <p>{content}</p>
+                </div>
+                <nav>
+                    <a href="/blog">← All Posts</a>
+                    <a href="/">Home</a>
+                </nav>
+            </article>
+        );
     }
 
-    return {
-      slug: params.slug,
-      ...post
-    };
-  }
+    static async getServerSideProps({ params }: { params: { slug: string } }) {
+        // Mock blog data - in real app this would come from CMS/database
+        const posts: Record<string, Omit<BlogPostProps, "slug">> = {
+            "hello-world": {
+                title: "Hello World",
+                content: "This is our first blog post using WSX Framework!",
+                date: "2024-01-01",
+            },
+            "wsx-features": {
+                title: "WSX Framework Features",
+                content: "Exploring SSR, routing, and zero-runtime benefits.",
+                date: "2024-01-02",
+            },
+        };
 
-  static getStyles() {
-    return `
+        const post = posts[params.slug];
+
+        if (!post) {
+            return {
+                notFound: true,
+            };
+        }
+
+        return {
+            slug: params.slug,
+            ...post,
+        };
+    }
+
+    static getStyles() {
+        return `
       .blog-post {
         padding: 2rem;
         max-width: 800px;
@@ -105,7 +105,7 @@ export class BlogPostPage extends WebComponent<BlogPostProps> {
         text-decoration: underline;
       }
     `;
-  }
+    }
 }
 
 export default BlogPostPage;

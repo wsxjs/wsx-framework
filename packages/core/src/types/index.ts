@@ -26,6 +26,7 @@ export interface WSXRoute {
   path: string;
   component: PageComponent;
   params?: RouteParams;
+  filePath?: string;
 }
 
 export interface WSXAppConfig {

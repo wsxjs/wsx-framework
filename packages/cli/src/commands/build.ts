@@ -1,20 +1,30 @@
 import { Command } from 'commander';
+import { loadConfig, buildForProduction } from '@wsx-framework/core';
 
 interface BuildOptions {
-  pages: string;
-  output: string;
+  config?: string;
 }
 
 export const buildCommand = new Command()
   .name('build')
   .description('Build the application for production')
-  .option('--pages <dir>', 'Pages directory', 'pages')
-  .option('--output <dir>', 'Output directory', '.wsx')
+  .option('-c, --config <path>', 'Path to config file')
   .action(async (options: BuildOptions) => {
-    console.log('Building application...');
-    console.log(`Pages: ${options.pages}`);
-    console.log(`Output: ${options.output}`);
+    console.log('🏗️  Building WSX application for production...');
     
-    // TODO: Implement build logic
-    console.log('Build completed!');
+    try {
+      // Load config from wsx.config.js
+      const config = await loadConfig(options.config);
+      
+      console.log(`📁 Pages directory: ${config.pagesDir}`);
+      console.log(`📦 Output directory: ${config.outDir}`);
+      
+      // Build using Vite
+      await buildForProduction(config);
+      
+      console.log('✅ Build completed successfully!');
+    } catch (error) {
+      console.error('❌ Build failed:', error);
+      process.exit(1);
+    }
   });

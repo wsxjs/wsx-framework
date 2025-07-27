@@ -4,7 +4,10 @@
       "Bash(pnpm install:*)",
       "Bash(corepack prepare:*)",
       "Bash(pnpm build:*)",
-      "Bash(npm publish:*)"
+      "Bash(npm publish:*)",
+      "Bash(timeout:*)",
+      "Bash(true)",
+      "Bash(rm:*)"
     ],
     "deny": []
   }

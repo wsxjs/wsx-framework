@@ -1,4 +1,4 @@
-import { WebComponent, autoRegister } from '@wsx-framework/core';
+import { WebComponent, autoRegister } from '@wsxjs/wsx-core';
 
 @autoRegister()
 export class HomePage extends WebComponent {

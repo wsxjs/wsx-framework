@@ -1,4 +1,6 @@
 import { WSXRoute, RouteParams } from '../types/index.js';
+import { readdirSync, statSync } from 'fs';
+import { join, extname, basename } from 'path';
 
 export class WSXRouter {
   private routes: WSXRoute[] = [];
@@ -48,6 +50,53 @@ export class WSXRouter {
 }
 
 export function createFileSystemRoutes(pagesDir: string): WSXRoute[] {
-  // This will be implemented with filesystem scanning
-  return [];
+  const routes: WSXRoute[] = [];
+  
+  function scanDirectory(dir: string, basePath: string = '') {
+    try {
+      const files = readdirSync(dir);
+      
+      for (const file of files) {
+        const fullPath = join(dir, file);
+        const stat = statSync(fullPath);
+        
+        if (stat.isDirectory()) {
+          // Recursively scan subdirectories
+          scanDirectory(fullPath, join(basePath, file));
+        } else if (file.endsWith('.tsx') || file.endsWith('.ts')) {
+          // Convert file path to route path
+          const routePath = fileToRoutePath(basePath, file);
+          
+          routes.push({
+            path: routePath,
+            component: null as any, // Will be loaded dynamically
+            filePath: fullPath
+          });
+        }
+      }
+    } catch (error) {
+      console.warn(`Could not scan directory ${dir}:`, error);
+    }
+  }
+  
+  scanDirectory(pagesDir);
+  return routes;
+}
+
+function fileToRoutePath(basePath: string, filename: string): string {
+  // Remove file extension
+  const nameWithoutExt = basename(filename, extname(filename));
+  
+  // Handle index files
+  if (nameWithoutExt === 'index') {
+    return basePath === '' ? '/' : `/${basePath}`;
+  }
+  
+  // Handle dynamic routes [param]
+  const routeName = nameWithoutExt.startsWith('[') && nameWithoutExt.endsWith(']') 
+    ? nameWithoutExt 
+    : nameWithoutExt;
+  
+  const fullPath = basePath === '' ? `/${routeName}` : `/${basePath}/${routeName}`;
+  return fullPath.replace(/\/+/g, '/'); // Clean up double slashes
 }

@@ -1,20 +1,21 @@
 {
-  "name": "demo-app",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "echo 'Dev server not implemented yet'",
-    "build": "echo 'Build not implemented yet'",  
-    "start": "echo 'Start server not implemented yet'",
-    "typecheck": "tsc --noEmit"
-  },
-  "dependencies": {
-    "@wsx-framework/core": "workspace:*"
-  },
-  "devDependencies": {
-    "@wsx-framework/cli": "workspace:*",
-    "@types/node": "^20.0.0",
-    "typescript": "^5.0.0"
-  }
+    "name": "demo-app",
+    "private": true,
+    "version": "0.0.0",
+    "type": "module",
+    "scripts": {
+        "dev": "wsx dev",
+        "build": "wsx build",
+        "start": "wsx start",
+        "typecheck": "tsc --noEmit"
+    },
+    "dependencies": {
+        "@wsx-framework/core": "workspace:*",
+        "@wsxjs/wsx-core": "^0.0.5"
+    },
+    "devDependencies": {
+        "@wsx-framework/cli": "workspace:*",
+        "@types/node": "^20.0.0",
+        "typescript": "^5.0.0"
+    }
 }
